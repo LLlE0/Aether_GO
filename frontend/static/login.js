@@ -7,7 +7,7 @@ login.addEventListener('click', event => {
     const formData = new FormData(formElement);
 
     if (formData.get('password') == '') {
-        alert('Вы не ввели пароль');
+        alert('No password');
     }
     else {
         const formData = new FormData(formElement);
