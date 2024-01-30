@@ -783,6 +783,12 @@ video {
   outline-color: #4f46e5;
 }
 
+::-webkit-scrollbar{
+  width:0;
+}
+
+
+
 @media (min-width: 640px) {
   .sm\:mx-auto {
     margin-left: auto;
