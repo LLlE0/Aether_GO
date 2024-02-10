@@ -20,7 +20,7 @@
           <h2 class="mt-1 sm:mr-14  text-center text-3xl font-semibold   leading-9 tracking-tight text-white ">Регистрация</h2>
         </div>  
         <div class="mt-7  sm:ml-20 sm:mr-auto sm:w-full sm:max-w-sm">
-          <form class="space-y-6 " action="#" method="POST">
+          <form class="space-y-6" onsubmit="reg_submit(event)" method="POST">
             <div>
               <label for="login" class="block text-sm font-medium leading-6 text-white">Имя пользователя</label>
               <div class="mt-1">
@@ -58,5 +58,7 @@
         </div>
       </div>
     </div>
+    
+    <script defer src = "../js/reg.js"></script>
 </body>
 </html>

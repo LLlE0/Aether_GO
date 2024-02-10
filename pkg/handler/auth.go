@@ -15,6 +15,7 @@ func (h *Handler) RegNew(w http.ResponseWriter, r *http.Request) {
 	//new variable to store login and password
 	var creds Credentials
 
+	log.Print("New user")
 	//decode the body of the request into the variable (error if wrong json structure)
 	err := json.NewDecoder(r.Body).Decode(&creds)
 	if err != nil {
@@ -27,9 +28,9 @@ func (h *Handler) RegNew(w http.ResponseWriter, r *http.Request) {
 	//set the header, so that the client will know how to deal with the response
 	w.Header().Set("Content-Type", "application/json")
 	//inserting the user into the database (error if something goes wrong)
-	_, err = h.DBInstance.Exec(`INSERT INTO users (username, password) VALUES (?, ?)`, creds.Username, hashPwd(creds.Password))
+	_, err = h.DBInstance.Exec(`INSERT INTO users (username, password, email) VALUES (?, ?, ?)`, creds.Username, hashPwd(creds.Password), creds.Email)
 	if err != nil {
-		log.Fatalf("Failed to execute query: %v", err)
+		log.Print("Failed to execute query: ", err)
 	}
 	//start a session
 	session, _ := h.SessionsStore.Get(r, "auth-session")
@@ -44,6 +45,8 @@ func (h *Handler) RegNew(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) AuthTry(w http.ResponseWriter, r *http.Request) {
 	//new variable to store login and password
 	var creds Credentials
+
+	log.Print(creds)
 	//decode the body of the request into the variable (error if wrong json structure)
 	err := json.NewDecoder(r.Body).Decode(&creds)
 	if err != nil {
@@ -51,7 +54,7 @@ func (h *Handler) AuthTry(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	//selecting the user with such login from the DB
-	row := h.DBInstance.QueryRow("SELECT password FROM users WHERE username = ?", creds.Username)
+	row := h.DBInstance.QueryRow("SELECT password FROM users WHERE email = ?", creds.Email)
 	var storedHashedPwd string
 	//Scan DB response
 	err = row.Scan(&storedHashedPwd)
